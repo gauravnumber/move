@@ -1,3 +1,5 @@
+#!/bin/bash
+
 moveSingleFileToDirectory() {
 	file="$1"
 	dir="$2"
@@ -37,9 +39,6 @@ moveAllFilesOfDirectoryToAnotherDirectory() {
 	for file in "$1"/*; do
 		moveSingleFileToDirectory "$file" "$2"
 	done
-
-	# echo "directory"
-
 }
 
 main() {

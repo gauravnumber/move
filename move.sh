@@ -18,22 +18,15 @@ moveSingleFileToDirectory() {
 		#? rm dest. dir name
 		#? bar/1.txt => 1.txt
 		destinationFile=${destinationFile/$dir\//}
-		# echo '$destinationFile' "$destinationFile"
-		# echo "$dir"/*
-		# while [[ "$destinationFile" == "$dir/$file" ]]; do
+
 		while [[ "$destinationFile" == "$file" ]]; do
 			file=$(echo "$destinationFile" | sed -E "s|(\w+)\.(\w+)|\1_$index\.\2|g;")
-			# file=${file/$dir\//}
-			# echo '$file' "$file"
 
-			# while [[ -e "$file" ]]; do
 			while [[ -e "$dir/$file" ]]; do
 				index=$(($index + 1))
 				file=$(echo "$destinationFile" | sed -E "s|(\w+)\.(\w+)|\1_$index\.\2|g;")
-				# file=${file/$dir\//}
 			done
 
-			# echo '$file' "$file"
 			mv -n "$1" "$dir/$file"
 		done
 	done
@@ -41,12 +34,7 @@ moveSingleFileToDirectory() {
 }
 
 moveAllFilesOfDirectoryToAnotherDirectory() {
-	# echo "$2"
 	for file in "$1"/*; do
-		# echo ${file/$1\//}
-		# ? foo/1.txt => 1.txt
-		# file=${file/$1\//}
-		# echo "$file"
 		moveSingleFileToDirectory "$file" "$2"
 	done
 

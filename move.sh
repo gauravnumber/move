@@ -2,48 +2,39 @@ moveSingleFileToDirectory() {
 	file="$1"
 	dir="$2"
 
-	# if [[ -d $file ]]; then echo "dire"; fi
+	#? rm src. dir name
+	#? foo/1.txt => 1.txt
+	file=${file/[a-z]*\//}
 
 	#? If destination file not exist then created
-	# if [[ ! -e "$dir/$file" ]]; then
-	# 	# echo "hie"
-	# 	echo '$dir/$file' "$dir/$file"
-
-	# 	mv -n "$file" "$dir/$file"
-	# 	exit 0
-	# fi
+	if [[ ! -e "$dir/$file" ]]; then
+		mv -n "$file" "$dir/$file"
+		exit 0
+	fi
 
 	index=1
 
 	for destinationFile in "$dir"/*; do
-		newfileName=$file
-		#? rm src. dir name
-		#? foo/1.txt => 1.txt
-		newfileName=${newfileName/[a-z]*\//}
-		# newfileName=${newfileName/$dir\//}
-
-		# echo '$newfileName' "$newfileName"
-
 		#? rm dest. dir name
 		#? bar/1.txt => 1.txt
 		destinationFile=${destinationFile/$dir\//}
 		# echo '$destinationFile' "$destinationFile"
 		# echo "$dir"/*
-		# while [[ "$destinationFile" == "$dir/$newfileName" ]]; do
-		while [[ "$destinationFile" == "$newfileName" ]]; do
-			newfileName=$(echo "$destinationFile" | sed -E "s|(\w+)\.(\w+)|\1_$index\.\2|g;")
-			# newfileName=${newfileName/$dir\//}
-			# echo '$newfileName' "$newfileName"
+		# while [[ "$destinationFile" == "$dir/$file" ]]; do
+		while [[ "$destinationFile" == "$file" ]]; do
+			file=$(echo "$destinationFile" | sed -E "s|(\w+)\.(\w+)|\1_$index\.\2|g;")
+			# file=${file/$dir\//}
+			# echo '$file' "$file"
 
-			# while [[ -e "$newfileName" ]]; do
-			while [[ -e "$dir/$newfileName" ]]; do
+			# while [[ -e "$file" ]]; do
+			while [[ -e "$dir/$file" ]]; do
 				index=$(($index + 1))
-				newfileName=$(echo "$destinationFile" | sed -E "s|(\w+)\.(\w+)|\1_$index\.\2|g;")
-				# newfileName=${newfileName/$dir\//}
+				file=$(echo "$destinationFile" | sed -E "s|(\w+)\.(\w+)|\1_$index\.\2|g;")
+				# file=${file/$dir\//}
 			done
 
-			# echo '$newfileName' "$newfileName"
-			mv -n "$1" "$dir/$newfileName"
+			# echo '$file' "$file"
+			mv -n "$1" "$dir/$file"
 		done
 	done
 

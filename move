@@ -4,15 +4,23 @@ moveSingleFileToDirectory() {
 	file="$1"
 	dir="$2"
 
+	# echo '$file' "$file"
+
 	#? rm src. dir name
 	#? foo/1.txt => 1.txt
-	file=${file/[a-z]*\//}
+	# file=${file/[a-z]*\//}
 
+	# echo "$dir/${file/[a-z]*\//}"
 	#? If destination file not exist then created
-	if [[ ! -e "$dir/$file" ]]; then
-		mv -n "$file" "$dir/$file"
-		exit 0
+	if [[ ! -e "$dir/${file/[a-z]*\//}" ]]; then
+		# echo '$file' "$file"
+		# echo '$dir/${file/[a-z]*\//}' "$dir/${file/[a-z]*\//}"
+
+		mv -n "$file" "$dir/${file/[a-z]*\//}"
+		return 0
 	fi
+
+	file=${file/[a-z]*\//}
 
 	index=1
 
@@ -36,6 +44,8 @@ moveSingleFileToDirectory() {
 }
 
 moveAllFilesOfDirectoryToAnotherDirectory() {
+	# echo '$1/*' "$1"/*
+
 	for file in "$1"/*; do
 		moveSingleFileToDirectory "$file" "$2"
 	done
